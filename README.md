@@ -1,5 +1,8 @@
 ## Y86-64 Processor Architecture Project Structure
 
+### Contributers
+- Harshvardhan Pandey (2022112006) 
+- Vaishnavi Shivkumar (2022102070)
 ### Project Structure Overview
 The project is organized into various directories and files, each serving a specific purpose in the development and testing of the Y86-64 processor. Below is a brief explanation of the structure and important components.
 
