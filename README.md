@@ -1,47 +1,87 @@
-# Intro to Processor Architecture - Project (Spring 2024)
+# Y86-64 Processor Architecture
 
-## 1.Overall Goal (Total Marks - 100)
+### Authors:
+- Harshvardhan Pandey (2022112006)
+- Vaishnavi Shivkumar (2022102070)
 
-Each group (2 students) must develop a processor architecture design based on the Y86 ISA using Verilog. The design
-should be thoroughly tested to satisfy all the specification requirements using simulations. The project submission
-must include the following
+### Date: March 2024
 
-- A report describing the design details of the various stages of the processor architecture, the supported features
-(including simulation snapshots of the features supported) and the challenges encountered. `(Marks-10)`
-- Verilog code for processor design and testbench
+---
 
-## 2.Specifications
+## Introduction
 
-The required specifications in the processor design are as follows:
+This repository contains the implementation and explanation of both sequential and pipelined versions of the Y86-64 processor. The Y86-64 processor is a simplified version of the x86-64 architecture used for educational purposes.
 
-- A bare minimum processor architecture must implement a sequential design as discussed in Section 4.3 of
-textbook. `(Marks-25)`
-- A full fledged processor architecture implementation with 5 stage pipeline as discussed in Sections 4.4 and 4.5
-of textbook, which includes support for eliminating pipeline hazards. `(Marks-40)`
+---
 
-Your submission should at least have the first design mentioned above in order to get minimal marks. However, your
-goal should be to submit a design with pipelined architecture so that you score maximum marks.
+## 1. Sequential Processor
 
-### Important points to notice:
-- Both the above implementations must execute all the instructions from Y86 ISA except **call** and **ret** instructions to get the above-mentioned marks. If you also execute **call** and **ret** instructions, additional marks will be awarded.`(Marks-15)`
-- Students are required to create 2 to 4 test cases (machine encodings of a sample program), ensuring comprehensive coverage of all instructions. `(Marks-10)`
-- You will be provided with a sample test case in a .txt file, facilitating testcase generation. Additionally, complex hidden test cases will be assessed during evalutions. (Mark distribution for these test cases is included is included in Sequential and Pipeline implementation).
+### 1.1 Fetch Stage
+- Reads the binary instruction file and fetches the required values.
+- Updates the program counter (PC) for the next instruction.
 
-## 3.Design Approach
-The design approach should be modular, i.e., each stage has to be coded as separate modules and tested independently
-in order to help the integration without too many issues.
+### 1.2 Decode Stage
+- Reads values of fetched register indices.
+- Stores values in `valA` and `valB`.
 
+### 1.3 Execute Stage
+- Executes operations and stores output in `valE`.
+- Handles ALU operations and conditional codes.
 
-## 4.Targets and Evaluation
+### 1.4 Memory Stage
+- Interacts with memory for reading or writing.
+- Writes occur at the clock's negative edge, reads store value in `valM`.
 
-Each group will be evaluated twice during the project - firstly on **Feb 20**. (**entire Sequential Design**)
+### 1.5 Write Back Stage
+- Updates the register file with new values from the execute and memory stages.
 
-The final evaluation will happen in the 1st week of March (**dates will be announced later**).
+### 1.6 PC Update
+- Updates the PC value based on the operation.
 
-## 5.Suggestions for Design Verification
+### 1.7 Test Cases
+- Includes various assembly code snippets to test different operations like `rmmovq`, `mrmovq`, `pushq`, `popq`, `call`, and `ret`.
 
-Please adhere to the following verification approaches as much as possible.
-- You can individually test each stage/module for its intended functionality by creating module specific test
-inputs.
-- Please write an assembly program for any algorithm (e.g., sorting algorithm) using Y86 ISA and the corresponding encoded instructions and use the encoded instructions to test your integrated design.
-- If possible, you can also think of an automated testbench that will help you to verify your design efficiently, i.e., automatically verify the state of the processor and memory after execution of each instruction in the program.
+---
+
+## 2. Pipelined Processor
+
+### 2.1 Fetch and PC Prediction
+- Fetch register and fetch stage select and predict the next PC value.
+
+### 2.2 Decode and Writeback Stage
+- Calculates `d_valA` and `d_valB`.
+- Uses data-forwarding and stalling methods.
+
+### 2.3 Execute Stage
+- Checks for bubbles and executes instructions accordingly.
+- Considers status inputs from memory and writeback stages.
+
+### 2.4 Memory Stage
+- Similar to sequential but checks for bubbles.
+
+### 2.5 Control System
+- Pipeline registers work in three modes: Normal, Stall, and Bubble.
+- Analyzes different control hazards and sets pipeline register modes accordingly.
+
+### 2.6 Pipeline Hazards
+- **Data Dependencies**: Uses data-forwarding to handle dependencies.
+- **Load-Use Hazard**: Stalls decoding for a cycle and inserts a bubble in the execute register.
+- **Branch Misprediction**: Uses a guessing algorithm and flushes wrong instructions.
+- **Return**: Stalls the pipeline for 3 clock cycles for return instructions.
+
+### 2.7 Test Cases
+- Includes assembly code snippets to test different operations, data dependencies, and hazard handling.
+
+### 2.8 Problems Faced
+- Timing issues and handling `valP` for `RET` instructions in the sequential processor.
+- Responding to status codes in the pipelined processor and maintaining bubble and stall requirements.
+
+---
+
+## Conclusion
+
+This report provides an in-depth explanation of the Y86-64 processor architecture, covering both sequential and pipelined implementations. It includes various test cases and discusses the challenges faced during development. 
+
+---
+
+Feel free to explore the repository for detailed implementation and test cases. If you have any questions or need further assistance, please reach out to the authors.
