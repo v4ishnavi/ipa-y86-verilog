@@ -1,87 +1,44 @@
-# Y86-64 Processor Architecture
+## Y86-64 Processor Architecture Project Structure
 
-### Authors:
-- Harshvardhan Pandey (2022112006)
-- Vaishnavi Shivkumar (2022102070)
+### Project Structure Overview
+The project is organized into various directories and files, each serving a specific purpose in the development and testing of the Y86-64 processor. Below is a brief explanation of the structure and important components.
 
-### Date: March 2024
+### Root Directory
+- **README.md**: General information and instructions about the project.
+- **Report.pdf**: Detailed report on the sequential and pipelined versions of the Y86-64 processor.
+- **hextobin.py**: Python script for converting hexadecimal to binary format.
 
----
+### Directories and Important Files
 
-## Introduction
+#### ALU
+Contains the Arithmetic Logic Unit (ALU) implementation and testbenches.
+- **ALU.v**: Main ALU module.
+- **tb_addition.v**, **tb_subtraction.v**, **tb_and.v**, **tb_xor.v**, **tb_alu.v**: Testbenches for different ALU operations.
 
-This repository contains the implementation and explanation of both sequential and pipelined versions of the Y86-64 processor. The Y86-64 processor is a simplified version of the x86-64 architecture used for educational purposes.
+#### Pipeline
+Contains the pipelined version of the processor.
+- **control.v**, **d_register.v**, **e_register.v**, **f_register.v**, **m_register.v**, **w_register.v**: Pipeline registers.
+- **fetch_pc.v**, **decode_wb.v**, **execute.v**, **memory.v**, **processor.v**: Main modules for fetch, decode, execute, memory, and processor logic.
+- **Demo.txt**: Example usage and demonstration.
 
----
+#### SEQ
+Contains the sequential version of the processor.
+- **fetch.v**, **execute.v**, **memory.v**, **pc_update.v**, **register_file.v**, **processor.v**: Main modules for fetch, execute, memory, PC update, register file, and processor logic.
+- **tb_fetch.v**, **tb_execute.v**, **tb_memory.v**, **tb_pc.v**: Testbenches for different stages.
+- **Demo.txt**: Example usage and demonstration.
 
-## 1. Sequential Processor
+#### SampleTestcase
+Contains various test cases for validating processor operations.
+- **1.txt**, **call_ret.txt**: Test cases for different processor instructions and operations.
+- **check_memory_op.txt**, **cmov_test.txt**: Test cases for memory operations and conditional moves.
+- **factorial_result.txt**, **fetch_test.txt**: Test cases for specific algorithm implementations.
+- **load_use_hazard.txt**, **ret_branch_mispredict.txt**: Test cases for pipeline hazards like load-use and branch misprediction.
+- **recursive_factorial.txt**, **mult_10_19.txt**: Test cases for recursive functions and multiplication.
 
-### 1.1 Fetch Stage
-- Reads the binary instruction file and fetches the required values.
-- Updates the program counter (PC) for the next instruction.
+### Important Notes from the Report
+- **Sequential Processor**: Describes the stages including Fetch, Decode, Execute, Memory, Write Back, and PC Update.
+- **Pipelined Processor**: Explains stages with pipeline hazards like data dependencies, load-use hazard, branch misprediction, and return handling.
+- **Control System**: Details the three modes of pipeline registers: Normal, Stall, and Bubble.
+- **Test Cases**: Includes multiple binary code (and their associated assembly code) snippets to validate the processor's functionality and handle edge cases.
 
-### 1.2 Decode Stage
-- Reads values of fetched register indices.
-- Stores values in `valA` and `valB`.
-
-### 1.3 Execute Stage
-- Executes operations and stores output in `valE`.
-- Handles ALU operations and conditional codes.
-
-### 1.4 Memory Stage
-- Interacts with memory for reading or writing.
-- Writes occur at the clock's negative edge, reads store value in `valM`.
-
-### 1.5 Write Back Stage
-- Updates the register file with new values from the execute and memory stages.
-
-### 1.6 PC Update
-- Updates the PC value based on the operation.
-
-### 1.7 Test Cases
-- Includes various assembly code snippets to test different operations like `rmmovq`, `mrmovq`, `pushq`, `popq`, `call`, and `ret`.
-
----
-
-## 2. Pipelined Processor
-
-### 2.1 Fetch and PC Prediction
-- Fetch register and fetch stage select and predict the next PC value.
-
-### 2.2 Decode and Writeback Stage
-- Calculates `d_valA` and `d_valB`.
-- Uses data-forwarding and stalling methods.
-
-### 2.3 Execute Stage
-- Checks for bubbles and executes instructions accordingly.
-- Considers status inputs from memory and writeback stages.
-
-### 2.4 Memory Stage
-- Similar to sequential but checks for bubbles.
-
-### 2.5 Control System
-- Pipeline registers work in three modes: Normal, Stall, and Bubble.
-- Analyzes different control hazards and sets pipeline register modes accordingly.
-
-### 2.6 Pipeline Hazards
-- **Data Dependencies**: Uses data-forwarding to handle dependencies.
-- **Load-Use Hazard**: Stalls decoding for a cycle and inserts a bubble in the execute register.
-- **Branch Misprediction**: Uses a guessing algorithm and flushes wrong instructions.
-- **Return**: Stalls the pipeline for 3 clock cycles for return instructions.
-
-### 2.7 Test Cases
-- Includes assembly code snippets to test different operations, data dependencies, and hazard handling.
-
-### 2.8 Problems Faced
-- Timing issues and handling `valP` for `RET` instructions in the sequential processor.
-- Responding to status codes in the pipelined processor and maintaining bubble and stall requirements.
-
----
-
-## Conclusion
-
-This report provides an in-depth explanation of the Y86-64 processor architecture, covering both sequential and pipelined implementations. It includes various test cases and discusses the challenges faced during development. 
-
----
-
-Feel free to explore the repository for detailed implementation and test cases. If you have any questions or need further assistance, please reach out to the authors.
+This structure ensures modularity and ease of testing for both sequential and pipelined versions of the Y86-64 processor.
