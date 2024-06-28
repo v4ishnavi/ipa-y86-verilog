@@ -1,0 +1,10 @@
+irmovq $10, %r10
+irmovq $19, %r11
+irmovq $0, %r12
+irmovq $1, %r13
+test:
+    addq %r10, %r12 
+    subq %r13, %r11 
+    andq %r11, %r11 
+    jne test
+halt

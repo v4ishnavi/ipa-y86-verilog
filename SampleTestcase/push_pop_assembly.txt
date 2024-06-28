@@ -1,0 +1,5 @@
+irmovq $20, %rsp
+irmovq $10, %rax
+pushq %rax
+popq %rbx
+halt

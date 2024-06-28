@@ -1,0 +1,11 @@
+nop
+irmovq $0x50, %r0
+mrmovq 5(%r2), %r1
+rmmovq %r1, %r2
+subq %r0, %r1 
+cmove %r0, %r2
+jle $2
+pushq %r0 
+popq %r1 
+call $11
+halt

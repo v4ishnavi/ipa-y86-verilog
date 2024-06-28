@@ -1,0 +1,6 @@
+irmovq $100, %rax
+irmovq $10, %rbx
+rmmovq %rbx, 5(%rax)
+mrmovq 5(%rax), %rcx
+addq %rcx, %rbx
+halt

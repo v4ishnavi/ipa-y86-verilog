@@ -1,0 +1,11 @@
+irmovq $100, %rsp
+call func
+addq %rsp, %rsp
+halt
+
+func:
+    irmovq $200, %rax
+    rmmovq %rsp, (%rax)
+    subq %rsp, %rsp
+    mrmovq (%rax), %rsp
+    ret

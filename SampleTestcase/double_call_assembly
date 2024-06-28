@@ -1,0 +1,16 @@
+irmovq $10, %rax
+irmovq $100, %rsp
+call foo
+addq %rax, %rax
+halt 
+
+foo:
+    addq %rax, %rax
+    call bar
+    addq %rax, %rax
+    ret
+    
+bar:
+    irmovq $10, %rax
+    ret
+    

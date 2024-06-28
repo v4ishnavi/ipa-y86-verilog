@@ -1,0 +1,7 @@
+
+.pos 0
+irmovq $5, %rax 
+irmovq $1, %rdx
+rmmovq %rax, (%rdx)
+mrmovq (%rdx), %rax
+halt

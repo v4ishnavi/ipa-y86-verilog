@@ -1,0 +1,11 @@
+irmovq $10, %rsp
+irmovq $5 , %rax
+irmovq $4 , %rbx
+call NF
+xorq %rax, %rbx
+halt
+
+NF:
+    addq %rax , %rbx
+    ret 
+addq %rax, %rbx    

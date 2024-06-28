@@ -1,0 +1,55 @@
+irmovq $6, %rax //input
+irmovq $1, %rdx // one
+jmp main
+right_shift:
+    //right_shift rax by 1
+    irmovq $0, %rdi //store ans
+    irmovq $63, %rbx //no of shiftss
+    L:
+        addq %rdi, %rdi
+        andq %rax, %rax
+        jge MSB_ZERO
+        xorq %rdx, %rdi
+    MSB_ZERO:
+        addq %rax, %rax
+        subq %rdx, %rbx
+        jne L
+        rrmovq %rdi, %rax
+        ret
+    
+mult:
+    //multiply rax and rcx, save in rcx
+    irmovq $0, %rsi
+    check: andq %rax, %rax
+    je mult_ret
+    pushq %rax
+    andq %rdx, %rax
+    popq %rax
+    je double
+    addq %rcx, %rsi
+    double: addq %rcx, %rcx
+    call right_shift
+    jmp check
+    mult_ret:
+        rrmovq %rsi, %rcx
+        ret
+fact:
+    //calculate factorial of rax in rax
+    andq %rax, %rax
+    je fact_ret
+    pushq %rax
+    subq %rdx, %rax
+    call fact
+    popq %rcx
+    call mult
+    rrmovq %rcx, %rax
+    ret
+    fact_ret:
+        rrmovq %rdx, %rax
+        ret
+
+main:
+    irmovq $511, %rsp
+    call fact
+    halt
+  
